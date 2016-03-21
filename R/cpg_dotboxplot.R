@@ -19,11 +19,12 @@
 #' cpg_dotboxplot("cg123456", Beta, Pheno)
 
 
-#TODO: Give it confidence intervals options as well as making it smarter. 
-cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, enlarged = T){
+#TODO: Give it confidence intervals options. 
+cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, enlarged = "auto"){
 
   #Convert the betas to a matrix, else the dataframe calling function won't work properly
   betas <- as.matrix(betas)
+  factor_interest <- as.factor(factor_interest)
   
   if(is.null(cpg_num)) stop("No CpG number defined")
   if(is.null(betas)) stop("No Beta matrix provided")
@@ -33,8 +34,18 @@ cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
   if(is.null(factor_interest)) stop("No factor of interest provided") 
   if(missing(title)) title <- cpg_num
   
+  #Not sure of declaring enlarged as a boolean with an extra value (Troolean?) is a good thing. Additionally, not sure if overwriting the initial value afterwards to a Boolean is a good thing either. 
   beta.df <- data.frame(beta = betas[cpg_num,], Cohort = factor_interest)
   if(gg.plot == T){
+    if(enlarged == "auto"){
+      if(sd(betas[cpg_num,]) < 0.015){ #A standard deviation of 0.015 is chosen somewhat arbitrarily 
+        message("Standard deviation of sample is smaller than 0.015. Enlarged plot will be generated")
+        enlarged <- T
+      } else{
+        message("Standard deviation of sample is larger than 0.015. Enlarged plot is not necessary")
+        enlarged <- F
+      }
+    } 
     if(enlarged == T){
       set.seed(1)
       small_plot <- ggplot(data = beta.df, aes(x = Cohort, y = beta)) + 
@@ -62,7 +73,7 @@ cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
               axis.text = element_text(size = 17), 
               axis.title = element_blank())
       grid.arrange(small_plot, large_plot, ncol = 2, top = textGrob(title, gp = gpar(fontsize = 17, fontface = "bold")))
-    } else{
+    } else if(enlarged == F){
       set.seed(1)
       small_plot <- ggplot(data = beta.df, aes(x = Cohort, y = beta)) + 
         ylim(c(0,1)) + 
@@ -75,9 +86,10 @@ cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
               axis.text = element_text(size = 17), 
               axis.title = element_text(size = 17, face = "bold"),
               legend.title = element_text(size = 17, face = "bold"),
-              legend.text = element_text(size = 17))
+              legend.text = element_text(size = 17),
+              plot.title = element_text(face = "bold"))
       small_plot
-    }
+    } else stop("Incorrect value entered for \"enlarged\"!")
   } else{
     set.seed(1)
     boxplot(beta~Cohort, data = beta.df, main = cpg_num, ylim = c(0,1), ylab = "Beta", main = title)
