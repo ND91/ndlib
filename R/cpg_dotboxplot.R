@@ -70,12 +70,13 @@ cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
         geom_jitter(size = 2, aes(shape = Cohort)) +
         theme_bw() + 
         xlab("") + 
-        ggitle(title) +
+        ggtitle(title) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
               axis.text = element_text(size = 17), 
               axis.title = element_text(size = 17, face = "bold"),
-              legend.title = element_text(size = 17),
-              legend.text = element_text(size = 17, face = "bold"))
+              legend.title = element_text(size = 17, face = "bold"),
+              legend.text = element_text(size = 17))
+      small_plot
     }
   } else{
     set.seed(1)
