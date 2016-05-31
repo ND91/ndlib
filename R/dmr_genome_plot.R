@@ -1,4 +1,4 @@
-#' dmr_genomeplot
+#' dmr_genome_plot
 #'
 #' Produces a dotplot of a specific (region of) CpG(s) given a matrix of beta-values superposed onto the RefSeq genomic location. 
 #' @param name Name of the DMR/DMP
@@ -16,7 +16,7 @@
 #' @param diff_symbol Do you want the different groups to be represented by different symbols (TRUE)? Defaults to FALSE
 #' @param dotsize The pixel size for plotting symbols. Defaults to 0.7 (standard of Gviz)
 #' @param plotgrid Do you want to plot a grid (TRUE)? Defaults to TRUE
-#' @param confint Do you want to plot the 95% confidence intervals (TRUE)? Defaults to TRUE
+#' @param confint Do you want to plot the 95\% confidence intervals (TRUE)? Defaults to TRUE
 #' @param highlight Do you want to highlight the region of interest (TRUE)? Defaults to TRUE
 #' 
 #' @author Andrew Y.F. Li Yim
@@ -28,8 +28,8 @@
 #' #Load data
 #' require(minfiData)
 #' baseDir <- system.file("extdata", package = "minfiData")
-#' targets <- read.450k.sheet(base = baseDir)
-#' RGset <- read.450k.exp(targets = targets, recursive = T)
+#' targets <- read.metharray.sheet(base = baseDir)
+#' RGset <- read.metharray.exp(targets = targets, recursive = T)
 #' Mset <- preprocessIllumina(rgSet = RGset, bg.correct = T, normalize = "controls", reference = 2)
 #' Rset <- ratioConvert(Mset)
 #' GMset <- mapToGenome(Rset)
@@ -49,9 +49,9 @@
 #' dmr_genomeplot(name = "DMR_1", chr = "chr6", betas = Beta, factor_interest = pData(Mset)$Sample_Group, annotation.gr = annotation.gr, start_dmr = dmr$start, end_dmr = dmr$end)
 #' 
 #' #Plot DMR (with SNPs)
-#' dmr_genomeplot(name = "DMR_1", chr = "chr6", betas = Beta, factor_interest = pData(Mset)$Sample_Group, annotation.gr = annotation.gr, start_dmr = dmr$start, end_dmr = dmr$end, SNP = T) 
+#' dmr_genome_plot(name = "DMR_1", chr = "chr6", betas = Beta, factor_interest = pData(Mset)$Sample_Group, annotation.gr = annotation.gr, start_dmr = dmr$start, end_dmr = dmr$end, SNP = T) 
 
-dmr_genomeplot <- function(name, chr, betas, annotation.gr, factor_interest, start_dmr, end_dmr, flanks, SNP = F, Reg = F, dmps = F, genome_version = "hg19", diff_symbol = T, dotsize = 0.7, plotgrid = T, confint = T, highlight = T){
+dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, start_dmr, end_dmr, flanks, SNP = F, Reg = F, dmps = F, genome_version = "hg19", diff_symbol = T, dotsize = 0.7, plotgrid = T, confint = T, highlight = T){
 
   #Input check
   if(is.null(chr)) stop("No chr provided")
@@ -267,64 +267,65 @@ dmr_genomeplot <- function(name, chr, betas, annotation.gr, factor_interest, sta
 #                               size = 1.3,
 #                               fontsize = 8)
     #H3K4Me1
-    h3k4me1track <- UcscTrack(genome = genome_version, 
-                              chromosome = chr,
-                              track = "Broad Histone", 
-                              table = "wgEncodeBroadHistoneGm12878H3k04me1StdSigV2",
-                              from = start_dmr_flanks-1000, 
-                              to = end_dmr_flanks+1000,
-                              trackType = "DataTrack", 
-                              start = "start", 
-                              end = "end", 
-                              data = "score", 
-                              type = "hist",
-                              window = -1,
-                              windowSize = 50,
-                              fill.histogram = "black",
-                              name = "H3K4Me1", 
-                              ylim = c(0,100),
-                              size = 1.3,
-                              fontsize = 8)
-    #H3K4Me3
-    h3k4me3track <- UcscTrack(genome = genome_version, 
-                              chromosome = chr,
-                              track = "Broad Histone", 
-                              table = "wgEncodeBroadHistoneGm12878H3k04me3StdSigV2",
-                              from = start_dmr_flanks-1000, 
-                              to = end_dmr_flanks+1000,
-                              trackType = "DataTrack", 
-                              start = "start", 
-                              end = "end", 
-                              data = "score", 
-                              type = "hist",
-                              window = -1,
-                              windowSize = 10,
-                              fill.histogram = "black",
-                              name = "H3K4Me3", 
-                              ylim = c(0,100),
-                              size = 1.3,
-                              fontsize = 8)
-    #DNaseI
-    dnasetrack <- UcscTrack(genome = genome_version, 
-                            chromosome = chr,
-                            track = "DNase Clusters", 
-                            table = "wgEncodeRegDnaseClusteredV3",
-                            from = start_dmr_flanks-1000, 
-                            to = end_dmr_flanks+1000,
-                            trackType = "DataTrack", 
-                            start = "start", 
-                            end = "end", 
-                            data = "score", 
-                            type = "hist",
-                            window = -1,
-                            windowSize = 10,
-                            fill.histogram = "black",
-                            name = "DNaseI",
-                            ylim = c(0,1000),
-                            size = 1.3,
-                            fontsize = 8)
+#     h3k4me1track <- UcscTrack(genome = genome_version, 
+#                               chromosome = chr,
+#                               track = "Broad Histone", 
+#                               table = "wgEncodeBroadHistoneGm12878H3k04me1StdSigV2",
+#                               from = start_dmr_flanks-1000, 
+#                               to = end_dmr_flanks+1000,
+#                               trackType = "DataTrack", 
+#                               start = "start", 
+#                               end = "end", 
+#                               data = "score", 
+#                               type = "hist",
+#                               window = -1,
+#                               windowSize = 50,
+#                               fill.histogram = "black",
+#                               name = "H3K4Me1", 
+#                               ylim = c(0,100),
+#                               size = 1.3,
+#                               fontsize = 8)
+#     #H3K4Me3
+#     h3k4me3track <- UcscTrack(genome = genome_version, 
+#                               chromosome = chr,
+#                               track = "Broad Histone", 
+#                               table = "wgEncodeBroadHistoneGm12878H3k04me3StdSigV2",
+#                               from = start_dmr_flanks-1000, 
+#                               to = end_dmr_flanks+1000,
+#                               trackType = "DataTrack", 
+#                               start = "start", 
+#                               end = "end", 
+#                               data = "score", 
+#                               type = "hist",
+#                               window = -1,
+#                               windowSize = 10,
+#                               fill.histogram = "black",
+#                               name = "H3K4Me3", 
+#                               ylim = c(0,100),
+#                               size = 1.3,
+#                               fontsize = 8)
+#     #DNaseI
+#     dnasetrack <- UcscTrack(genome = genome_version, 
+#                             chromosome = chr,
+#                             track = "DNase Clusters", 
+#                             table = "wgEncodeRegDnaseClusteredV3",
+#                             from = start_dmr_flanks-1000, 
+#                             to = end_dmr_flanks+1000,
+#                             trackType = "DataTrack", 
+#                             start = "start", 
+#                             end = "end", 
+#                             data = "score", 
+#                             type = "hist",
+#                             window = -1,
+#                             windowSize = 10,
+#                             fill.histogram = "black",
+#                             name = "DNaseI",
+#                             ylim = c(0,1000),
+#                             size = 1.3,
+#                             fontsize = 8)
     
-    tracklist <- c(tracklist, cgitrack, h3k4me1track, h3k4me3track, dnasetrack, tfbstrack)
+    #tracklist <- c(tracklist, cgitrack, h3k4me1track, h3k4me3track, dnasetrack, tfbstrack)
+    tracklist <- c(tracklist, cgitrack, tfbstrack)
   }
   
   #Highlight track: Useful indication of where the region of interest was found

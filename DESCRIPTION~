@@ -1,6 +1,6 @@
 Package: NDlib
 Title: A list of handy functions
-Version: 0.0.1.0000
+Version: 0.0.0.9000
 Authors@R: person("Andrew", "Li Yim", email = "andrewliyim@gmail.com", role = c("aut", "cre"))
 Description: This package contains several functions which are relevant to the analysis of DNA methylation (obtained from Illumina HumanMethylation BeadChips or sequencing).
 Depends: R (>= 3.2.2)

@@ -1,11 +1,11 @@
-#' cpg_dotboxplot 
+#' cpg_dotbox_plot 
 #'
 #' Produces a boxplot overlayed by a stripplot of a specific CpG given a matrix of beta-values. Ensure that the Beta-matrix has the CpG number as the row names
 #' @param cpg_num CpG number (ID)
 #' @param betas Matrix of Beta with the CpG numbers as rownames
 #' @param factor_interest A vector based on which you want to stratify your plot
 #' @param gg.plot Do you want to plot using ggplot2 (TRUE) or base R plotting (FALSE). Defaults to TRUE.
-#' @param enlarged Do you want an enlarged plot on the right side (TRUE). Defaults to TRUE.
+#' @param enlarged Do you want an enlarged plot on the right side (TRUE or FALSE). Defaults to "auto" whereby the standard deviation will be calculated of the sample. If the sd is smaller than 0.015 the enlarged plot will be generated for visibility purposes. 
 #' 
 #' @author Andrew Y.F. Li Yim
 #' 
@@ -16,11 +16,11 @@
 #' Beta <- matrix(c(0.15,0.2,0.17,0.76,0.8,0.65,0.22,0.23,0.24,0.5,0.51,0.52), nrow = 2,ncol = 6, byrow = T)
 #' rownames(Beta) <- c("cg123456", "cg789010")
 #' Pheno <- c(rep("pheno1", 3), rep("pheno2", 3))
-#' cpg_dotboxplot("cg123456", Beta, Pheno)
+#' cpg_dotbox_plot("cg123456", Beta, Pheno)
 
 
 #TODO: Give it confidence intervals options. 
-cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, enlarged = "auto"){
+cpg_dotbox_plot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, enlarged = "auto"){
 
   #Convert the betas to a matrix, else the dataframe calling function won't work properly
   betas <- as.matrix(betas)
@@ -55,6 +55,7 @@ cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
         theme_bw() + 
         xlab("") + 
         ylab("Beta") +
+        scale_shape_manual(values=(1:nlevels(beta.df$Cohort))%%10) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
               axis.text = element_text(size = 17), 
               axis.title = element_text(size = 17, face = "bold"),
@@ -69,6 +70,7 @@ cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
         ggtitle("Enlarged") + 
         theme(legend.position = "none") + 
         xlab("") + 
+        scale_shape_manual(values=(1:nlevels(beta.df$Cohort))%%10) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
               axis.text = element_text(size = 17), 
               axis.title = element_blank())
@@ -81,6 +83,7 @@ cpg_dotboxplot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
         geom_jitter(size = 2, aes(shape = Cohort)) +
         theme_bw() + 
         xlab("") + 
+        scale_shape_manual(values=(1:nlevels(beta.df$Cohort))%%10) +
         ggtitle(title) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
               axis.text = element_text(size = 17), 
