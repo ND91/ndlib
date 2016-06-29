@@ -1,1 +1,1 @@
-This package contains a set of handy functions which in my opinion are useful functions for quickly assessing methylation data obtained from the Illumina BeadChip Infinium arrays. 
+This package contains a set of handy functions which in my opinion are useful functions for quickly assessing methylation data obtained from the Illumina BeadChip Infinium arrays. Use at your own risk! 
