@@ -36,8 +36,10 @@
 #' #Plot the volcano_plot
 #' 
 
-volcano_plot <- function(effect_sizes, pvals, identifiers, int_effect_threshold = NULL, pval_threshold = 0.05, effect_limit = NULL, top_names = NULL, title){
-
+volcano_plot <- function(effect_sizes, pvals, identifiers, int_effect_threshold = NULL, pval_threshold = 0.05, effect_limit = NULL, top_names = NULL, title = NULL, x_lab = NULL, y_lab = NULL){
+  require(ggplot2)
+  require(ggrepel)
+  
   #Sanitize the data
   if(is.null(effect_sizes)) stop("No vector of effect sizes defined")
   else{effect_sizes <- as.numeric(effect_sizes)}
@@ -56,30 +58,50 @@ volcano_plot <- function(effect_sizes, pvals, identifiers, int_effect_threshold 
   volplot$threshold[which(volplot$threshold == 1)] <- "Significant"
   volplot$threshold[which(volplot$threshold == 0)] <- "Non significant"
   if(!is.null(int_effect_threshold)){
-    volplot$threshold[abs(volplot$effect_sizes) >= abs(int_effect_threshold)] <- "Interesting"
+    volplot$threshold[abs(volplot$effect_sizes) >= abs(int_effect_threshold) & volplot$pvals <= pval_threshold] <- "Interesting"
   }
   volplot$threshold <- factor(volplot$threshold, levels = c("Significant", "Non significant", "Interesting"))  
   
+  #Plotting range thresholds
   x_lim <- max(abs(effect_sizes))
-  
-  drawplot <- ggplot(volplot, aes(x = effect_sizes, y = -log10(pvals), label = identifiers, color = threshold))
-  if(!is.null(top_names)){
-    drawplot <- drawplot + geom_label_repel(data=head(volplot[order(volplot$pvals, decreasing= F),], n=top_names), show.legend = F)
+  if(-log10(pval_threshold) > range(-log10(volplot$pvals))[2]+1){
+    y_lim <- c(0,-log10(pval_threshold))
+  } else{
+    y_lim <- c(0, range(-log10(volplot$pvals))[2]+1)
   }
+  
+  #Plotting with ggplot2
+  drawplot <- ggplot(volplot, aes(x = effect_sizes, y = -log10(pvals), label = identifiers, color = threshold))
   drawplot <- drawplot + geom_point(alpha = 0.4, size = 1)
   drawplot <- drawplot + geom_hline(yintercept = -log10(pval_threshold), linetype = "longdash")
   if(!is.null(int_effect_threshold)){
     drawplot <- drawplot + geom_vline(xintercept = c(-int_effect_threshold, int_effect_threshold), linetype = "longdash")
   } 
+  if(!is.null(top_names)){
+    drawplot <- drawplot + geom_label_repel(data=head(volplot[order(volplot$pvals, decreasing= F),], n=top_names), show.legend = F)
+  }
   drawplot <- drawplot + theme_bw()
   drawplot <- drawplot + xlim(c(-x_lim, x_lim))
-  drawplot <- drawplot + ylab("-log10(P)")
-  drawplot <- drawplot + xlab("Mean effect size")
+  if(!is.null(y_lab)){
+    drawplot <- drawplot + ylab(y_lab)
+  } else{
+    drawplot <- drawplot + ylab("-log10(P)")
+  }
+  if(!is.null(x_lab)){
+    drawplot <- drawplot + xlab(x_lab)
+  } else{
+    drawplot <- drawplot + xlab("Mean effect size")
+  }
+  if(!is.null(title)){
+    drawplot <- drawplot + ggtitle(title)
+  } 
   drawplot <- drawplot + scale_color_brewer(palette = "Dark2")
   drawplot <- drawplot + guides(colour = guide_legend(override.aes = list(size = 10)))
-  drawplot <- drawplot + theme(axis.text = element_text(size = 12), 
-                               axis.title = element_text(size = 14),
+  drawplot <- drawplot + theme(axis.text = element_text(size = 17), 
+                               axis.title = element_text(size = 17, face = "bold"),
+                               plot.title = element_text(size = 17, face = "bold"),
                                legend.title = element_blank(),
+                               legend.text = element_text(size = 17),
                                legend.position = "bottom")
   drawplot
 }

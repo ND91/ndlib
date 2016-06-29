@@ -52,7 +52,8 @@
 #' dmr_genome_plot(name = "DMR_1", chr = "chr6", betas = Beta, factor_interest = pData(Mset)$Sample_Group, annotation.gr = annotation.gr, start_dmr = dmr$start, end_dmr = dmr$end, SNP = T) 
 
 dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, start_dmr, end_dmr, flanks, SNP = F, Reg = F, dmps = F, genome_version = "hg19", diff_symbol = T, dotsize = 0.7, plotgrid = T, confint = T, highlight = T){
-
+  require(Gviz)
+  
   #Input check
   if(is.null(chr)) stop("No chr provided")
   if(!is.character(chr)) stop("chr is not a character, please input it as \"chr[1-9]\"")
