@@ -5,7 +5,8 @@
 \title{volcano_plot}
 \usage{
 volcano_plot(effect_sizes, pvals, identifiers, int_effect_threshold = NULL,
-  pval_threshold = 0.05, effect_limit = NULL, top_names = NULL, title)
+  pval_threshold = 0.05, effect_limit = NULL, top_names = NULL,
+  title = NULL, x_lab = NULL, y_lab = NULL)
 }
 \arguments{
 \item{effect_sizes}{A numeric vector of effect sizes}

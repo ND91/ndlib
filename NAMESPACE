@@ -2,7 +2,7 @@
 
 export(BetatoM)
 export(MtoBeta)
-export(cpg_dotbox_plot)
+export(cpg_strip_plot)
 export(cpgs_within_region)
 export(dmr_genome_plot)
 export(gene_cpg_finder)
