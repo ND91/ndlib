@@ -56,25 +56,25 @@ cpg_strip_plot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
       # https://stackoverflow.com/questions/19258460/standard-error-bars-using-stat-summary
       # http://r.789695.n4.nabble.com/ggplot-stat-summary-mean-cl-boot-td4021218.html
       overall_plot <- overall_plot + 
-        stat_summary(fun.data = mean_se, geom = "crossbar", width = 0.3, aes(color = Cohort))
+        stat_summary(fun.data = mean_se, geom = "crossbar",  aes(color = Cohort))
       
     } else if(type == "CI"){ 
       para <- T
       
       if(para == T){
         #mean_cl_normal: Calls Hmisc::smean.cl.normal and is meant for normal distributions
-        stat.function <- stat_summary(fun.data = mean_cl_normal, geom = "crossbar", width = 0.3, aes(color = Cohort))
+        stat.function <- stat_summary(fun.data = mean_cl_normal, geom = "crossbar",  aes(color = Cohort))
       } else{
         #mean_cl_boot: Calls Hmisc::smean.cl.boot() and is meant for non-parametric distributions, CIs are calculated through bootstraps, which we set to 5000
         B <- 1000
         conf.int <- 0.95
-        stat.function <- stat_summary(fun.data = mean_cl_boot, fun.args = list(B = B, conf.int = conf.int), geom = "crossbar", width = 0.3, aes(color = Cohort))
+        stat.function <- stat_summary(fun.data = mean_cl_boot, fun.args = list(B = B, conf.int = conf.int), geom = "crossbar",  aes(color = Cohort))
       }
       overall_plot <- overall_plot + 
         stat.function
     } else if(type == "mean"){
       overall_plot <- overall_plot + 
-        stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", geom = "crossbar", width = 0.3, aes(color = Cohort))
+        stat_summary(fun.y = "mean", fun.ymin = "mean", fun.ymax = "mean", geom = "crossbar",  aes(color = Cohort))
     } else stop("Incorrect value entered for the \"type\" argument! Can only be \"boxplot\", \"SE\", \"CI\" or \"mean\"")
     
     if(enlarged == "auto"){
