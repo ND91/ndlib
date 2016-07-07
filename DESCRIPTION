@@ -4,12 +4,15 @@ Version: 0.0.1.0000
 Authors@R: person("Andrew", "Li Yim", email = "andrewliyim@gmail.com", role = c("aut", "cre"))
 Description: This package contains several functions which are relevant to the analysis of DNA methylation (obtained from Illumina HumanMethylation BeadChips or sequencing).
 Depends: R (>= 3.2.2)
+Suggests: 	minfi,
+		minfiData
 Imports: 
 	GenomicRanges, 
 	ggplot2, 
 	gridExtra, 
 	Gviz, 
-	ggrepel
+	ggrepel,
+	Hmisc
 License: GPL v3.0
 LazyData: true
 RoxygenNote: 5.0.1

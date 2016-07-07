@@ -13,6 +13,11 @@
 #' @return A boxplot overlayed by a stripplot of a specific CpG
 #' @keywords cpg, stripplot, boxplot, methylation
 #' @export
+#' @importFrom Hmisc smean.cl.normal 
+#' @importFrom Hmisc smean.cl.boot 
+#' @importFrom gridExtra grid.arrange 
+#' @importFrom grid textGrob
+#' @import ggplot2
 #' @examples 
 #' Beta <- matrix(c(0.15,0.2,0.17,0.76,0.8,0.65,0.22,0.23,0.24,0.5,0.51,0.52), nrow = 2,ncol = 6, byrow = T)
 #' rownames(Beta) <- c("cg123456", "cg789010")
@@ -65,7 +70,7 @@ cpg_strip_plot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
         #mean_cl_normal: Calls Hmisc::smean.cl.normal and is meant for normal distributions
         stat.function <- stat_summary(fun.data = mean_cl_normal, geom = "crossbar",  aes(color = Cohort))
       } else{
-        #mean_cl_boot: Calls Hmisc::smean.cl.boot() and is meant for non-parametric distributions, CIs are calculated through bootstraps, which we set to 5000
+        #mean_cl_boot: Calls Hmisc::smean.cl.boot and is meant for non-parametric distributions, CIs are calculated through bootstraps, which we set to 5000
         B <- 1000
         conf.int <- 0.95
         stat.function <- stat_summary(fun.data = mean_cl_boot, fun.args = list(B = B, conf.int = conf.int), geom = "crossbar",  aes(color = Cohort))

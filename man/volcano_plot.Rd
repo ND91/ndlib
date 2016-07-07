@@ -55,5 +55,10 @@ top_genes <- toptable(fit = lfit, coef = 2, number = Inf)
 \author{
 Andrew Y.F. Li Yim
 }
+\seealso{
+\pkg{\link{minfi}}
+
+\pkg{\link{minfiData}}
+}
 \keyword{volcanoplot}
 

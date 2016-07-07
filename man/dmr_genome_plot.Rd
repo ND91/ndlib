@@ -80,6 +80,11 @@ dmr_genome_plot(name = "DMR_1", chr = "chr6", betas = Beta, factor_interest = pD
 \author{
 Andrew Y.F. Li Yim
 }
+\seealso{
+\pkg{\link{minfi}}
+
+\pkg{\link{minfiData}}
+}
 \keyword{cpg,}
 \keyword{dmr,}
 \keyword{methylation}

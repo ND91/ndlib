@@ -15,6 +15,10 @@
 #' @return A volcano plot with the effect size on the X axis and the -log10 adjusted p-value on the Y axis. 
 #' @keywords volcanoplot
 #' @export
+#' @import ggplot2 
+#' @importFrom ggrepel geom_label_repel
+#' @seealso \pkg{\link{minfi}}
+#' @seealso \pkg{\link{minfiData}}
 #' @examples 
 #' #Load data
 #' require(minfiData)
@@ -37,9 +41,7 @@
 #' 
 
 volcano_plot <- function(effect_sizes, pvals, identifiers, int_effect_threshold = NULL, pval_threshold = 0.05, effect_limit = NULL, top_names = NULL, title = NULL, x_lab = NULL, y_lab = NULL){
-  require(ggplot2)
-  require(ggrepel)
-  
+
   #Sanitize the data
   if(is.null(effect_sizes)) stop("No vector of effect sizes defined")
   else{effect_sizes <- as.numeric(effect_sizes)}
