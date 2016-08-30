@@ -86,11 +86,11 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
 #   #Betas
 #   GMset.beta <- as.data.frame(betas)
 #   dmr.flanks.annotation <- annotation.gr[which(as.character(seqnames(annotation.gr)) == chr & start(annotation.gr) >= start_dmr_flanks & start(annotation.gr) <= end_dmr_flanks),]
-#   dmr.450k <- data.frame(seqnames = as.character(seqnames(dmr.flanks.annotation)), pos = start(dmr.flanks.annotation), GMset.beta[names(dmr.flanks.annotation),])
-#   colnames(dmr.450k) <- c("seqnames", "pos", colnames(GMset.beta))
-#   dmr.450k.gr <- makeGRangesFromDataFrame(df = dmr.450k, keep.extra.columns = T, start.field = "pos", end.field = "pos")
+#   dmr.meth <- data.frame(seqnames = as.character(seqnames(dmr.flanks.annotation)), pos = start(dmr.flanks.annotation), GMset.beta[names(dmr.flanks.annotation),])
+#   colnames(dmr.meth) <- c("seqnames", "pos", colnames(GMset.beta))
+#   dmr.meth.gr <- makeGRangesFromDataFrame(df = dmr.meth, keep.extra.columns = T, start.field = "pos", end.field = "pos")
 
-  dmr.450k.gr <- methdata_to_granges(methdata = betas, annotation.gr = annotation.gr, chr = chr, start_region = start_dmr_flanks, end_region = end_dmr_flanks)$region.450k.gr
+  dmr.meth.gr <- methdata_to_granges(methdata = betas, annotation.gr = annotation.gr, chr = chr, start_region = start_dmr_flanks, end_region = end_dmr_flanks)$region.meth.gr
   
   #############
   # Plot:Gviz #
@@ -141,8 +141,8 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
   #Change size symbols
   cexp <- dotsize
   
-  dtrack.450k <- DataTrack(range = dmr.450k.gr, 
-                           name = "450K", 
+  dtrack.meth <- DataTrack(range = dmr.meth.gr, 
+                           name = "Methylation", 
                            ylim = c(0,1), 
                            groups = factor_interest,
                            lty = sort(as.numeric(as.factor(levels(factor_interest)))),
@@ -155,7 +155,7 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
   ###################
   # Base track list #
   ###################
-  tracklist <- c(itrack, gtrack, grtrack, dtrack.450k)
+  tracklist <- c(itrack, gtrack, grtrack, dtrack.meth)
   
   ########################
   # Accessory track list #

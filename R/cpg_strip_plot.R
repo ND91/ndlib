@@ -71,7 +71,7 @@ cpg_strip_plot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
         stat.function <- stat_summary(fun.data = mean_cl_normal, geom = "crossbar",  aes(color = Cohort))
       } else{
         #mean_cl_boot: Calls Hmisc::smean.cl.boot and is meant for non-parametric distributions, CIs are calculated through bootstraps, which we set to 5000
-        B <- 1000
+        B <- 5000
         conf.int <- 0.95
         stat.function <- stat_summary(fun.data = mean_cl_boot, fun.args = list(B = B, conf.int = conf.int), geom = "crossbar",  aes(color = Cohort))
       }
@@ -100,15 +100,15 @@ cpg_strip_plot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
               axis.title = element_blank())
       
       overall_plot <- overall_plot + 
-        geom_jitter(size = 2, aes(shape = Cohort), width = 0.3) +
-        ylim(c(0,1)) + 
+        geom_jitter(size = 2, aes(shape = Cohort)) +
+        coord_cartesian(ylim=c(0,1)) + 
         ylab("Beta")
       
       grid.arrange(overall_plot, large_plot, ncol = 2, top = textGrob(title, gp = gpar(fontsize = 17, fontface = "bold")))
     } else if(enlarged == F){
       overall_plot <- overall_plot + 
-        geom_jitter(size = 2, aes(shape = Cohort), width = 0.3) + 
-        ylim(c(0,1)) + 
+        geom_jitter(size = 2, aes(shape = Cohort)) + 
+        coord_cartesian(ylim=c(0,1)) + 
         ggtitle(title)
       overall_plot
     } else stop("Incorrect value entered for the \"enlarged\" argument!")
