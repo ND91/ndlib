@@ -93,6 +93,7 @@ cpg_strip_plot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
     } 
     if(enlarged == T){
       large_plot <- overall_plot +
+        geom_jitter(size = 2, aes(shape = Cohort)) +
         ggtitle("Enlarged") + 
         theme(legend.position = "none") + 
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
@@ -100,7 +101,6 @@ cpg_strip_plot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
               axis.title = element_blank())
       
       overall_plot <- overall_plot + 
-        geom_jitter(size = 2, aes(shape = Cohort)) +
         coord_cartesian(ylim=c(0,1)) + 
         ylab("Beta")
       
