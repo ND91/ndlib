@@ -17,8 +17,8 @@
 #' #Load data
 #' require(minfiData)
 #' baseDir <- system.file("extdata", package = "minfiData")
-#' targets <- read.450k.sheet(base = baseDir)
-#' RGset <- read.450k.exp(targets = targets, recursive = T)
+#' targets <- read.metharray.sheet(base = baseDir)
+#' RGset <- read.metharray.exp(targets = targets, recursive = T)
 #' Mset <- preprocessIllumina(rgSet = RGset, bg.correct = T, normalize = "controls", reference = 2)
 #' Rset <- ratioConvert(Mset)
 #' GMset <- mapToGenome(Rset)
@@ -62,10 +62,10 @@ methdata_to_granges <- function(methdata, annotation.gr, chr, start_region, end_
   region.annotation <- annotation.gr[which(as.character(seqnames(annotation.gr)) == chr & start(annotation.gr) >= start_region & start(annotation.gr) <= end_region),]
   if(length(region.annotation)==0) stop("Cannot find any CpGs within the given coordinates!")
   
-  region.450k <- data.frame(seqnames = as.character(seqnames(region.annotation)), pos = start(region.annotation), GMset.beta[names(region.annotation),])
-  colnames(region.450k) <- c("seqnames", "pos", colnames(GMset.beta))
-  region.450k.gr <- makeGRangesFromDataFrame(df = region.450k, keep.extra.columns = T, start.field = "pos", end.field = "pos")
+  region.meth <- data.frame(seqnames = as.character(seqnames(region.annotation)), pos = start(region.annotation), GMset.beta[names(region.annotation),])
+  colnames(region.meth) <- c("seqnames", "pos", colnames(GMset.beta))
+  region.meth.gr <- makeGRangesFromDataFrame(df = region.meth, keep.extra.columns = T, start.field = "pos", end.field = "pos")
   
-  return(list(region.annotation.gr = region.annotation, region.450k.gr = region.450k.gr))
+  return(list(region.annotation.gr = region.annotation, region.meth.gr = region.meth.gr))
 }
 
