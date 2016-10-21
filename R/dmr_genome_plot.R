@@ -18,6 +18,7 @@
 #' @param plotgrid Do you want to plot a grid (TRUE)? Defaults to TRUE
 #' @param confint Do you want to plot the 95\% confidence intervals (TRUE)? Defaults to TRUE
 #' @param highlight Do you want to highlight the region of interest (TRUE)? Defaults to TRUE
+#' @param col_DMR A color vector used for plotting the DMRs. Must be the same size as the levels of factor_interest. Defaults to NULL (which is automatic color assignment)
 #' 
 #' @author Andrew Y.F. Li Yim
 #' 
@@ -54,7 +55,7 @@
 #' #Plot DMR (with SNPs)
 #' dmr_genome_plot(name = "DMR_1", chr = "chr6", betas = Beta, factor_interest = pData(Mset)$Sample_Group, annotation.gr = annotation.gr, start_dmr = dmr$start, end_dmr = dmr$end, SNP = T) 
 
-dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, start_dmr, end_dmr, flanks, SNP = F, Reg = F, dmps = F, genome_version = "hg19", diff_symbol = T, dotsize = 0.7, plotgrid = T, confint = T, highlight = T){
+dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, start_dmr, end_dmr, flanks, SNP = F, Reg = F, dmps = F, genome_version = "hg19", diff_symbol = T, dotsize = 0.7, plotgrid = T, confint = T, highlight = T, col_DMR = NULL){
   
   #Input check
   if(is.null(chr)) stop("No chr provided")
@@ -66,6 +67,7 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
   if(ncol(betas) != length(factor_interest)) stop("Length of factor of interest does not equal number of samples")
   if(is.null(start_dmr)) stop("No start given")
   if(is.null(end_dmr)) stop("No end given")
+  if(!is.null(col_DMR) & length(col_DMR) != length(unique(factor_interest))) stop("Number of colors does not match the unique number of factor_interest")
   if(missing(flanks)){ #If no flanks are given, automate the flanks to be the same size as the DMR. If a DMP is provided, set it to 100 (arbitrarily chosen)
     region_size <- end_dmr-start_dmr
     if(region_size == 0){
@@ -141,17 +143,32 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
   #Change size symbols
   cexp <- dotsize
   
-  dtrack.meth <- DataTrack(range = dmr.meth.gr, 
-                           name = "Methylation", 
-                           ylim = c(0,1), 
-                           groups = factor_interest,
-                           lty = sort(as.numeric(as.factor(levels(factor_interest)))),
-                           pch = pchp,
-                           cex = cexp,
-                           type = type_plot, 
-                           legend = TRUE,
-                           fontsize = 10)
- 
+  if(!is.null(col_DMR)){
+    dtrack.meth <- DataTrack(range = dmr.meth.gr, 
+                             name = "Methylation", 
+                             ylim = c(0,1), 
+                             groups = factor_interest,
+                             lty = sort(as.numeric(as.factor(levels(factor_interest)))),
+                             pch = pchp,
+                             cex = cexp,
+                             type = type_plot, 
+                             legend = TRUE,
+                             fontsize = 10,
+                             col = col_DMR)
+    
+  } else{
+    dtrack.meth <- DataTrack(range = dmr.meth.gr, 
+                             name = "Methylation", 
+                             ylim = c(0,1), 
+                             groups = factor_interest,
+                             lty = sort(as.numeric(as.factor(levels(factor_interest)))),
+                             pch = pchp,
+                             cex = cexp,
+                             type = type_plot, 
+                             legend = TRUE,
+                             fontsize = 10)
+  }
+  
   ###################
   # Base track list #
   ###################

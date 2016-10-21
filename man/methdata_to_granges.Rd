@@ -30,8 +30,8 @@ Produces a dotplot of a specific (region of) CpG(s) given a matrix of beta-value
 #Load data
 require(minfiData)
 baseDir <- system.file("extdata", package = "minfiData")
-targets <- read.450k.sheet(base = baseDir)
-RGset <- read.450k.exp(targets = targets, recursive = T)
+targets <- read.metharray.sheet(base = baseDir)
+RGset <- read.metharray.exp(targets = targets, recursive = T)
 Mset <- preprocessIllumina(rgSet = RGset, bg.correct = T, normalize = "controls", reference = 2)
 Rset <- ratioConvert(Mset)
 GMset <- mapToGenome(Rset)

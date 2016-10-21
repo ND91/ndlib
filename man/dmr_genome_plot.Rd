@@ -7,7 +7,7 @@
 dmr_genome_plot(name, chr, betas, annotation.gr, factor_interest, start_dmr,
   end_dmr, flanks, SNP = F, Reg = F, dmps = F, genome_version = "hg19",
   diff_symbol = T, dotsize = 0.7, plotgrid = T, confint = T,
-  highlight = T)
+  highlight = T, col_DMR = NULL)
 }
 \arguments{
 \item{name}{Name of the DMR/DMP}
@@ -43,6 +43,8 @@ dmr_genome_plot(name, chr, betas, annotation.gr, factor_interest, start_dmr,
 \item{confint}{Do you want to plot the 95\% confidence intervals (TRUE)? Defaults to TRUE}
 
 \item{highlight}{Do you want to highlight the region of interest (TRUE)? Defaults to TRUE}
+
+\item{col_DMR}{A color vector used for plotting the DMRs. Must be the same size as the levels of factor_interest. Defaults to NULL (which is automatic color assignment)}
 }
 \value{
 A dotplot of a specific (region of) CpG(s) of beta-values superposed onto the RefSeq genome. Additionally, it returns a genomic ranges object with the CpGs within the chosen region.
