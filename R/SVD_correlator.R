@@ -34,7 +34,7 @@ SVD_correlator <- function(SVD, confounder, alpha = 0.05, title){
   
   if(!is.null(alpha)){
     cor.pval.df$Significant <- cor.pval.df$P.value < alpha
-    plotgraph <- ggplot(cor.pval.df, aes(x = PC, y = Correlation, ymax = 1, col = Significant), environment = environment()) + 
+    plotgraph <- ggplot(cor.pval.df, aes(x = PC, y = Correlation, ymax = 1, col = Significant)) + 
       geom_point(size = 3) + 
       theme_bw() +
       ggtitle(title) +
@@ -46,7 +46,7 @@ SVD_correlator <- function(SVD, confounder, alpha = 0.05, title){
             legend.text = element_text(size = 12),
             legend.position = "bottom")
   } else{
-    plotgraph <- ggplot(cor.pval.df, aes(x = PC, y = Correlation, ymax = 1), environment = environment()) +
+    plotgraph <- ggplot(cor.pval.df, aes(x = PC, y = Correlation, ymax = 1)) +
       geom_point(size = 3) + 
       theme_bw() +
       ggtitle(title) +
