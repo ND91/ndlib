@@ -33,7 +33,7 @@ SVD_correlator <- function(SVD, confounder, alpha = 0.05, title){
   cor.pval.df <- data.frame(t(cor.pval), PC = 1:ncol(cor.pval))
   
   if(!is.null(alpha)){
-    cor.pval.df$Significant <- degree.corr.df$P.value < alpha
+    cor.pval.df$Significant <- cor.pval.df$P.value < alpha
     plotgraph <- ggplot(cor.pval.df, aes(x = PC, y = Correlation, ymax = 1, col = Significant), environment = environment()) + 
       geom_point(size = 3) + 
       theme_bw() +
