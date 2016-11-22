@@ -2,10 +2,12 @@
 
 export(BetatoM)
 export(MtoBeta)
+export(SVD_correlator)
 export(cpg_strip_plot)
 export(cpgs_within_region)
 export(dmr_genome_plot)
 export(gene_cpg_finder)
+export(lmp)
 export(methdata_to_granges)
 export(minfi_to_GEO)
 export(volcano_plot)
