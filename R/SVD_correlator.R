@@ -20,12 +20,13 @@ SVD_correlator <- function(SVD, confounder, alpha = 0.05, title){
   if(ncol(SVD) != length(confounder)) stop("Number of columns in the v matrix is not the same as the number of confounders")
   if(missing(title)) title <- paste0("Correlation: Confounder per PC")
   
-  confounder <- factor(confounder)
+  if(!is.numeric(confounder)){
+    confounder <- factor(confounder)
+  }
   
   cor.pval <- apply(X = SVD, MARGIN = 2, FUN = function(i){
     fit <- lm(i~confounder)
-    fit.summary <- summary(fit)
-    pval <- pf(fit.summary$fstatistic[1], fit.summary$fstatistic[2], fit.summary$fstatistic[3], lower.tail = F)
+    pval <- lmp(fit)
     
     return(c(Correlation = summary(fit)$adj.r.squared, P = pval))
   })
