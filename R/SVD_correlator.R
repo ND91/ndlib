@@ -35,7 +35,7 @@ SVD_correlator <- function(SVD, confounder, alpha_threshold = 0.05, title){
   
   
   if(!is.null(alpha_threshold)){
-    cor.pval.df$Significant <- cor.pval.df$P.value < alpha_threshold
+    cor.pval.df$Significant <- cor.pval.df$P < alpha_threshold
     plotgraph <- ggplot(cor.pval.df, aes(x = PC, y = Correlation, ymax = 1, col = Significant)) + 
       geom_point(size = 3) + 
       theme_bw() +
