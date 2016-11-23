@@ -12,7 +12,7 @@
 #' @export
 #' @import ggplot2
 
-SVD_correlator <- function(SVD, confounder, alpha_threshold = 0.05, title){
+SVD_correlator <- function(SVD, confounder, alpha_threshold = 0.05, padj.method = "BH", title){
   if(is.null(SVD)) stop("No SVD provided")
   if(is.list(SVD)){
     SVD <- SVD$v
@@ -31,11 +31,10 @@ SVD_correlator <- function(SVD, confounder, alpha_threshold = 0.05, title){
     return(c(Correlation = summary(fit)$adj.r.squared, P = pval))
   })
   
-  cor.pval.df <- data.frame(t(cor.pval), PC = 1:ncol(cor.pval))
-  
+  cor.pval.df <- data.frame(t(cor.pval), padj = p.adjust(p = data.frame(t(cor.pval))$P, method = padj.method), PC = 1:ncol(cor.pval))
   
   if(!is.null(alpha_threshold)){
-    cor.pval.df$Significant <- cor.pval.df$P < alpha_threshold
+    cor.pval.df$Significant <- cor.pval.df$padj < alpha_threshold
     plotgraph <- ggplot(cor.pval.df, aes(x = PC, y = Correlation, ymax = 1, col = Significant)) + 
       geom_point(size = 3) + 
       theme_bw() +
