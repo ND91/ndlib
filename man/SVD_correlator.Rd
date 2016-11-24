@@ -4,7 +4,8 @@
 \alias{SVD_correlator}
 \title{SVD_correlator}
 \usage{
-SVD_correlator(SVD, confounder, alpha = 0.05, title)
+SVD_correlator(SVD, confounder, alpha_threshold = 0.05, padj.method = "BH",
+  title)
 }
 \arguments{
 \item{SVD}{Either the output of SVD: A list containing three outputs: left singular matrix u, vector d and right singular matrix v, or a vector containing the right singular matrix v obtained from SVD.}

@@ -40,6 +40,7 @@ SVD_correlator <- function(SVD, confounder, alpha_threshold = 0.05, padj.method 
       theme_bw() +
       ggtitle(title) +
       ylab(expression(R^2)) +
+      scale_colour_discrete(drop = FALSE) + 
       theme(plot.title = element_text(face = "bold"),
             axis.title = element_text(size = 14, face = "bold"),
             axis.text = element_text(size = 12), 
@@ -52,6 +53,7 @@ SVD_correlator <- function(SVD, confounder, alpha_threshold = 0.05, padj.method 
       theme_bw() +
       ggtitle(title) +
       ylab(expression(R^2)) +
+      scale_colour_discrete(drop = FALSE) + 
       theme(plot.title = element_text(face = "bold"),
             axis.title = element_text(size = 14, face = "bold"),
             axis.text = element_text(size = 12), 
