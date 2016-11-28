@@ -4,29 +4,29 @@
 \alias{volcano_plot}
 \title{volcano_plot}
 \usage{
-volcano_plot(effect_sizes, pvals, identifiers, int_effect_threshold = NULL,
-  pval_threshold = 0.05, effect_limit = NULL, top_names = NULL,
+volcano_plot(effect_sizes, pvals, significance, identifiers,
+  int_effect_threshold = NULL, effect_limit = NULL, top_names = NULL,
   title = NULL, x_lab = NULL, y_lab = NULL)
 }
 \arguments{
-\item{effect_sizes}{A numeric vector of effect sizes}
+\item{effect_sizes}{A numeric vector of effect sizes.}
 
-\item{pvals}{A numeric vector of (adjusted) p values)}
+\item{pvals}{A numeric vector of p values.}
 
-\item{identifiers}{A character vector of identifiers}
+\item{significance}{A boolean vector indicating the significant hits (T = significant, F = non-significant).}
+
+\item{identifiers}{A character vector of identifiers.}
 
 \item{int_effect_threshold}{A vertical dashed line to indicate results above an effect size. Defaults to NULL.}
 
-\item{pval_threshold}{A horizontal dashed line to indicate the statistically significant results. Defaults to 0.05}
+\item{effect_limit}{Upper limit of the plot. Defaults to finding the limits automatically.}
 
-\item{effect_limit}{If you know there is an upper limit to the effect size. Defaults to finding the limits automatically}
-
-\item{top_names}{A numeric value representing whether you want to plot the names of the top (based on significance) X hits. Defaults to NULL.}
+\item{top_names}{An integer representing the names of the top (based on significance) X hits. Defaults to NULL.}
 
 \item{title}{Title of the plot.}
 }
 \value{
-A volcano plot with the effect size on the X axis and the -log10 adjusted p-value on the Y axis.
+A volcano plot with the effect size on the X axis and the -log10 p-value on the Y axis. Adjusted p-values are indicated with a different color.
 }
 \description{
 This function was written since the volcanoplot is an easy way to globally assess the distribution of the p values relative to the effect sizes. This specific function has been tailored to my need of working with methylation data.

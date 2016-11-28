@@ -64,7 +64,7 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   volplot$threshold[which(volplot$significance == T)] <- "significant"
   volplot$threshold[which(volplot$significance == F)] <- "non significant"
   if(!is.null(int_effect_threshold)){
-    volplot$threshold[abs(volplot$effect_sizes) >= abs(int_effect_threshold) & volplot$significance == "significant"] <- "sig. interesting"
+    volplot$threshold[abs(volplot$effect_sizes) >= abs(int_effect_threshold) & volplot$threshold == "significant"] <- "sig. interesting"
   }
   volplot$threshold <- factor(volplot$threshold, levels = c("sig. interesting", "significant", "non significant"))  
   
