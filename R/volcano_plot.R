@@ -48,7 +48,7 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   if(is.null(pvals)) stop("No vector of p-values provided")
   else{pvals <- as.numeric(pvals)}
   if(is.null(significance)) stop("No vector of significance provided")
-  else{significance <- as.numeric(significance)}
+  else{significance <- as.logical(significance)}
   if(is.null(identifiers)) stop("No vector of identifiers provided")
   else{identifiers <- as.character(identifiers)}
   if(!is.null(top_names) & !is.numeric(top_names)) stop("The top_names must be a numeric value") 
