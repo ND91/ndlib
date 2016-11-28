@@ -1,22 +1,22 @@
 #' volcano_plot
 #'
 #' This function was written since the volcanoplot is an easy way to globally assess the distribution of the p values relative to the effect sizes. This specific function has been tailored to my need of working with methylation data. 
-#' @param effect_sizes A numeric vector of effect sizes
-#' @param pvals A numeric vector of (adjusted) p values)
-#' @param identifiers A character vector of identifiers
+#' @param effect_sizes A numeric vector of effect sizes.
+#' @param pvals A numeric vector of p values.
+#' @param significance A boolean vector indicating the significant hits (T = significant, F = non-significant).
+#' @param identifiers A character vector of identifiers.
 #' @param int_effect_threshold A vertical dashed line to indicate results above an effect size. Defaults to NULL.
-#' @param pval_threshold A horizontal dashed line to indicate the statistically significant results. Defaults to 0.05
-#' @param effect_limit If you know there is an upper limit to the effect size. Defaults to finding the limits automatically
-#' @param top_names A numeric value representing whether you want to plot the names of the top (based on significance) X hits. Defaults to NULL.
+#' @param effect_limit Upper limit of the plot. Defaults to finding the limits automatically.
+#' @param top_names An integer representing the names of the top (based on significance) X hits. Defaults to NULL.
 #' @param title Title of the plot.
 #' 
 #' @author Andrew Y.F. Li Yim
 #' 
-#' @return A volcano plot with the effect size on the X axis and the -log10 adjusted p-value on the Y axis. 
+#' @return A volcano plot with the effect size on the X axis and the -log10 p-value on the Y axis. Adjusted p-values are indicated with a different color.
 #' @keywords volcanoplot
 #' @export
 #' @import ggplot2 
-#' @importFrom ggrepel geom_label_repel
+#' @import ggrepel
 #' @seealso \pkg{\link{minfi}}
 #' @seealso \pkg{\link{minfiData}}
 #' @examples 
@@ -40,42 +40,44 @@
 #' #Plot the volcano_plot
 #' 
 
-volcano_plot <- function(effect_sizes, pvals, identifiers, int_effect_threshold = NULL, pval_threshold = 0.05, effect_limit = NULL, top_names = NULL, title = NULL, x_lab = NULL, y_lab = NULL){
+volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_effect_threshold = NULL, effect_limit = NULL, top_names = NULL, title = NULL, x_lab = NULL, y_lab = NULL){
 
   #Sanitize the data
   if(is.null(effect_sizes)) stop("No vector of effect sizes defined")
   else{effect_sizes <- as.numeric(effect_sizes)}
   if(is.null(pvals)) stop("No vector of p-values provided")
   else{pvals <- as.numeric(pvals)}
-  if(is.null(identifiers)) stop("No identifiers provided")
+  if(is.null(significance)) stop("No vector of significance provided")
+  else{significance <- as.numeric(significance)}
+  if(is.null(identifiers)) stop("No vector of identifiers provided")
   else{identifiers <- as.character(identifiers)}
   if(!is.null(top_names) & !is.numeric(top_names)) stop("The top_names must be a numeric value") 
   
-  if(length(effect_sizes) != length(pvals)) stop("Number of effect sizes and the number of p-values does not correspond")
-  if(length(effect_sizes) != length(identifiers)) stop("Number of effect sizes and the number of identifiers does not correspond")
+  if(length(effect_sizes) != length(pvals)) stop("Size of the effect size vector and the p-value vector do not correspond")
+  if(length(effect_sizes) != length(identifiers)) stop("Size of the effect size vector and the identifier vector do not correspond")
+  if(length(effect_sizes) != length(significance)) stop("Size of the effect size vector and the significance vector do not correspond")
+  
+  #which(is.na(significance))
   
   #Generate data frame for ggplot
-  volplot <- data.frame(effect_sizes, pvals, identifiers)
-  volplot$threshold <- (volplot$pvals < pval_threshold)*1
-  volplot$threshold[which(volplot$threshold == 1)] <- "Significant"
-  volplot$threshold[which(volplot$threshold == 0)] <- "Non significant"
+  volplot <- data.frame(effect_sizes, pvals, significance, identifiers)
+  volplot$threshold[which(volplot$significance == T)] <- "significant"
+  volplot$threshold[which(volplot$significance == F)] <- "non significant"
   if(!is.null(int_effect_threshold)){
-    volplot$threshold[abs(volplot$effect_sizes) >= abs(int_effect_threshold) & volplot$pvals <= pval_threshold] <- "Interesting"
+    volplot$threshold[abs(volplot$effect_sizes) >= abs(int_effect_threshold) & volplot$significance == "significant"] <- "sig. interesting"
   }
-  volplot$threshold <- factor(volplot$threshold, levels = c("Significant", "Non significant", "Interesting"))  
+  volplot$threshold <- factor(volplot$threshold, levels = c("sig. interesting", "significant", "non significant"))  
   
   #Plotting range thresholds
   x_lim <- max(abs(effect_sizes))
-  if(-log10(pval_threshold) > range(-log10(volplot$pvals))[2]+1){
-    y_lim <- c(0,-log10(pval_threshold))
-  } else{
-    y_lim <- c(0, range(-log10(volplot$pvals))[2]+1)
-  }
+  y_lim <- c(0, range(-log10(volplot$pvals))[2]+1)
+
+  #Colors
+  cbColors <- c("#009E73", "#0072B2", "#D55E00")
   
   #Plotting with ggplot2
   drawplot <- ggplot(volplot, aes(x = effect_sizes, y = -log10(pvals), label = identifiers, color = threshold))
   drawplot <- drawplot + geom_point(alpha = 0.4, size = 1)
-  drawplot <- drawplot + geom_hline(yintercept = -log10(pval_threshold), linetype = "longdash")
   if(!is.null(int_effect_threshold)){
     drawplot <- drawplot + geom_vline(xintercept = c(-int_effect_threshold, int_effect_threshold), linetype = "longdash")
   } 
@@ -97,7 +99,9 @@ volcano_plot <- function(effect_sizes, pvals, identifiers, int_effect_threshold 
   if(!is.null(title)){
     drawplot <- drawplot + ggtitle(title)
   } 
-  drawplot <- drawplot + scale_color_brewer(palette = "Dark2")
+  
+  drawplot <- drawplot + scale_color_manual(values = c(cbColors),
+                                            drop = F)
   drawplot <- drawplot + guides(colour = guide_legend(override.aes = list(size = 10)))
   drawplot <- drawplot + theme(axis.text = element_text(size = 17), 
                                axis.title = element_text(size = 17, face = "bold"),
