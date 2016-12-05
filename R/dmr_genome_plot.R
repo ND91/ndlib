@@ -359,7 +359,8 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
     alltrack <- HighlightTrack(trackList = tracklist,
                                start = start_dmr-offset,
                                end = end_dmr+offset,
-                               chromosome = chr)  
+                               chromosome = chr,
+                               fill = NA)  
   } else{
     alltrack <- tracklist
   }
