@@ -24,7 +24,7 @@
 #' Pheno <- c(rep("pheno1", 3), rep("pheno2", 3))
 #' cpg_strip_plot("cg123456", Beta, Pheno, type = "SE")
 
-transcript_strip_plot <- function(id, counts, factor_interest, title, gg.plot = T, enlarged = "auto", type = "boxplot"){
+transcript_strip_plot <- function(id, counts, factor_interest, title, gg.plot = T, enlarged = "auto", type = "boxplot", legend = T){
 
   #Convert the counts to a matrix, else the dataframe calling function won't work properly
   counts <- as.matrix(counts)
@@ -52,6 +52,10 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, gg.plot = 
             legend.title = element_text(size = 17, face = "bold"),
             legend.text = element_text(size = 17),
             plot.title = element_text(face = "bold"))
+    
+    if(legend == F){
+      overall_plot <- overall_plot + theme(legend.position = "none")
+    }
     
     if(type == "boxplot"){
       overall_plot <- overall_plot + 
@@ -104,11 +108,13 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, gg.plot = 
         ylab("Counts")
       
       grid.arrange(overall_plot, large_plot, ncol = 2, top = textGrob(title, gp = gpar(fontsize = 17, fontface = "bold")))
+      return(list(overall_plot, large_plot))
     } else if(enlarged == F){
       overall_plot <- overall_plot + 
         geom_jitter(size = 2, aes(shape = Group)) + 
         ggtitle(title)
       overall_plot
+      return(overall_plot)
     } else stop("Incorrect value entered for the \"enlarged\" argument!")
   } else{
     set.seed(1)
