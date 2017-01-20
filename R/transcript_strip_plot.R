@@ -19,10 +19,6 @@
 #' @importFrom grid textGrob
 #' @import ggplot2
 #' @examples 
-#' Beta <- matrix(c(0.15,0.2,0.17,0.76,0.8,0.65,0.22,0.23,0.24,0.5,0.51,0.52), nrow = 2,ncol = 6, byrow = T)
-#' rownames(Beta) <- c("cg123456", "cg789010")
-#' Pheno <- c(rep("pheno1", 3), rep("pheno2", 3))
-#' cpg_strip_plot("cg123456", Beta, Pheno, type = "SE")
 
 transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged = "auto", type = "boxplot", legend = T, y_lab = NULL){
 
@@ -45,6 +41,7 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged =
     overall_plot <- ggplot(data = counts.df, aes(x = Group, y = count)) + 
       theme_bw() + 
       xlab("") + 
+      ylab(y_lab) +
       scale_shape_manual(values=(1:nlevels(counts.df$Group))%%10) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             axis.text = element_text(size = 17), 
@@ -103,9 +100,6 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged =
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
               axis.text = element_text(size = 17), 
               axis.title = element_blank())
-      
-      overall_plot <- overall_plot + 
-        ylab(y_lab)
       
       grid.arrange(overall_plot, large_plot, ncol = 2, top = textGrob(title, gp = gpar(fontsize = 17, fontface = "bold")))
       return(list(overall_plot, large_plot))
