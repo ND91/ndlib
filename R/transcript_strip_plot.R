@@ -24,7 +24,7 @@
 #' Pheno <- c(rep("pheno1", 3), rep("pheno2", 3))
 #' cpg_strip_plot("cg123456", Beta, Pheno, type = "SE")
 
-transcript_strip_plot <- function(id, counts, factor_interest, title, gg.plot = T, enlarged = "auto", type = "boxplot", legend = T){
+transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged = "auto", type = "boxplot", legend = T, y_lab = NULL){
 
   #Convert the counts to a matrix, else the dataframe calling function won't work properly
   counts <- as.matrix(counts)
@@ -37,10 +37,10 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, gg.plot = 
   if(ncol(counts) != length(factor_interest)) stop("Length of factor of interest does not equal number of samples") 
   if(is.null(factor_interest)) stop("No factor of interest provided") 
   if(missing(title)) title <- id
+  if(is.null(y_lab)) y_lab <- "Counts"
   
   counts.df <- data.frame(count = counts[id,], Group = factor_interest)
   #Not sure of declaring enlarged as a boolean with an extra value (Troolean?) is a good thing. Similarly, not sure if overwriting the initial value afterwards to a Boolean is a good thing either. 
-  if(gg.plot == T){
     #Overall plot
     overall_plot <- ggplot(data = counts.df, aes(x = Group, y = count)) + 
       theme_bw() + 
@@ -105,7 +105,7 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, gg.plot = 
               axis.title = element_blank())
       
       overall_plot <- overall_plot + 
-        ylab("Counts")
+        ylab(y_lab)
       
       grid.arrange(overall_plot, large_plot, ncol = 2, top = textGrob(title, gp = gpar(fontsize = 17, fontface = "bold")))
       return(list(overall_plot, large_plot))
@@ -116,9 +116,4 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, gg.plot = 
       overall_plot
       return(overall_plot)
     } else stop("Incorrect value entered for the \"enlarged\" argument!")
-  } else{
-    set.seed(1)
-    boxplot(beta~Group, data = counts.df, main = id, ylab = "Beta", main = title)
-    stripchart(beta~Group, data = counts.df, vertical = T, method = "jitter", pch = 16, add = T, col = "blue")
   }
-}
