@@ -4,9 +4,12 @@
 #' @param id Identifier as provided in the count matrix
 #' @param counts Matrix of counts with the identifiers as rownames
 #' @param factor_interest A vector based on which you want to stratify your plot
-#' @param gg.plot Do you want to plot using ggplot2 (TRUE) or base R plotting (FALSE). Defaults to TRUE.
+#' @param title A title for the plot
 #' @param enlarged Do you want an enlarged plot on the right side (TRUE or FALSE). Defaults to "auto" whereby the standard deviation will be calculated of the sample. If the sd is smaller than 0.015 the enlarged plot will be generated for visibility purposes. 
 #' @param type Choose the type of plot you want: "boxplot", "SE", "CI" or simply "mean". Defaults to "boxplot".
+#' @param colors A vector containing the the colors to be utilized for the plot with the contrast of interest as names (default: uses ggplot's default coloring scheme).
+#' @param legend Boolean depicting whether a legend should be included (default: TRUE)
+#' @param y_lab A specific name for the y labels (default: "Counts")
 #' 
 #' @author Andrew Y.F. Li Yim
 #' 
@@ -20,7 +23,7 @@
 #' @import ggplot2
 #' @examples 
 
-transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged = "auto", type = "boxplot", legend = T, y_lab = NULL){
+transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged = "auto", type = "boxplot", colors = NULL, legend = T, y_lab = NULL){
 
   #Convert the counts to a matrix, else the dataframe calling function won't work properly
   counts <- as.matrix(counts)
@@ -34,6 +37,9 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged =
   if(is.null(factor_interest)) stop("No factor of interest provided") 
   if(missing(title)) title <- id
   if(is.null(y_lab)) y_lab <- "Counts"
+  if(!is.null(colors)){
+    if(!all(factor_interest %in% names(colors))) stop("Factor of interest cannot be found in colors")
+  }
   
   counts.df <- data.frame(count = counts[id,], Group = factor_interest)
   #Not sure of declaring enlarged as a boolean with an extra value (Troolean?) is a good thing. Similarly, not sure if overwriting the initial value afterwards to a Boolean is a good thing either. 
@@ -42,13 +48,17 @@ transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged =
       theme_bw() + 
       xlab("") + 
       ylab(y_lab) +
-      scale_shape_manual(values=(1:nlevels(counts.df$Group))%%10) +
+      scale_shape_manual(values = (1:nlevels(counts.df$Group))%%10) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
             axis.text = element_text(size = 17), 
             axis.title = element_text(size = 17, face = "bold"),
             legend.title = element_text(size = 17, face = "bold"),
             legend.text = element_text(size = 17),
             plot.title = element_text(face = "bold"))
+    
+    if(!is.null(colors)){
+      overall_plot <- overall_plot + scale_fill_manual(values = colors)
+    }
     
     if(legend == F){
       overall_plot <- overall_plot + theme(legend.position = "none")
