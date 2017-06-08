@@ -12,7 +12,7 @@
 #' Mvals <- c(1.5184121,3.8591045,1.7411637,2.3336920,1.3309937,-4.1895298,-4.0174476,-0.9808680,1.4356915,-0.5294438)
 #' Betas <- MtoBeta(Mvals)
 
-MtoBeta <- function(mvals){
+M_to_Beta <- function(mvals){
   if(is.null(mvals)) stop("No M values defined")
   else if(is.character(mvals)) stop("Provided M values are non-numeric")
   mvals <- as.numeric(mvals)

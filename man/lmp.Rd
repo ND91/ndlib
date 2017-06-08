@@ -37,4 +37,3 @@ Stephen Turner
 \keyword{fstatistic}
 \keyword{lm,}
 \keyword{p-value,}
-

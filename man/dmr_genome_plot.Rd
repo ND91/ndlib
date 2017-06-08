@@ -79,15 +79,14 @@ dmr_genomeplot(name = "DMR_1", chr = "chr6", betas = Beta, factor_interest = pDa
 #Plot DMR (with SNPs)
 dmr_genome_plot(name = "DMR_1", chr = "chr6", betas = Beta, factor_interest = pData(Mset)$Sample_Group, annotation.gr = annotation.gr, start_dmr = dmr$start, end_dmr = dmr$end, SNP = T) 
 }
-\author{
-Andrew Y.F. Li Yim
-}
 \seealso{
 \pkg{\link{minfi}}
 
 \pkg{\link{minfiData}}
 }
+\author{
+Andrew Y.F. Li Yim
+}
 \keyword{cpg,}
 \keyword{dmr,}
 \keyword{methylation}
-

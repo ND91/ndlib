@@ -21,7 +21,6 @@
 #' @importFrom gridExtra grid.arrange 
 #' @importFrom grid textGrob
 #' @import ggplot2
-#' @examples 
 
 transcript_strip_plot <- function(id, counts, factor_interest, title, enlarged = "auto", type = "boxplot", colors = NULL, legend = T, y_lab = NULL){
 

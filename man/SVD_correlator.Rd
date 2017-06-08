@@ -26,4 +26,3 @@ Andrew Y.F. Li Yim
 \keyword{PCA,}
 \keyword{SVD,}
 \keyword{correlation}
-

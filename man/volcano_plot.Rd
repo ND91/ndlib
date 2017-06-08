@@ -5,8 +5,9 @@
 \title{volcano_plot}
 \usage{
 volcano_plot(effect_sizes, pvals, significance, identifiers,
-  int_effect_threshold = NULL, effect_limit = NULL, top_names = NULL,
-  title = NULL, x_lab = NULL, y_lab = NULL)
+  int_effect_threshold = NULL, effect_limit = NULL, p_limit = NULL,
+  top_names = NULL, title = NULL, x_lab = NULL, y_lab = NULL,
+  legend = T)
 }
 \arguments{
 \item{effect_sizes}{A numeric vector of effect sizes.}
@@ -19,11 +20,17 @@ volcano_plot(effect_sizes, pvals, significance, identifiers,
 
 \item{int_effect_threshold}{A vertical dashed line to indicate results above an effect size. Defaults to NULL.}
 
-\item{effect_limit}{Upper limit of the plot. Defaults to finding the limits automatically.}
+\item{effect_limit}{Upper limit of the effect sizes of the plot. Defaults to finding the limits automatically.}
+
+\item{p_limit}{Upper limit of the p-values of the plot. Defaults to finding the limits automatically.}
 
 \item{top_names}{An integer representing the names of the top (based on significance) X hits. Defaults to NULL.}
 
 \item{title}{Title of the plot.}
+
+\item{x_lab}{X-axis label.}
+
+\item{y_lab}{Y-axis label.}
 }
 \value{
 A volcano plot with the effect size on the X axis and the -log10 p-value on the Y axis. Adjusted p-values are indicated with a different color.
@@ -50,15 +57,14 @@ lfit <- eBayes(lfit)
 top_genes <- toptable(fit = lfit, coef = 2, number = Inf)
 
 #Plot the volcano_plot
-
-}
-\author{
-Andrew Y.F. Li Yim
+volcano_plot(top_genes$logFC, top_genes$pval, top_genes$padj < 0.05)
 }
 \seealso{
 \pkg{\link{minfi}}
 
 \pkg{\link{minfiData}}
 }
+\author{
+Andrew Y.F. Li Yim
+}
 \keyword{volcanoplot}
-

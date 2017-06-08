@@ -4,8 +4,8 @@
 \alias{transcript_strip_plot}
 \title{transcript_strip_plot}
 \usage{
-transcript_strip_plot(id, counts, factor_interest, title, gg.plot = T,
-  enlarged = "auto", type = "boxplot")
+transcript_strip_plot(id, counts, factor_interest, title, enlarged = "auto",
+  type = "boxplot", colors = NULL, legend = T, y_lab = NULL)
 }
 \arguments{
 \item{id}{Identifier as provided in the count matrix}
@@ -14,11 +14,17 @@ transcript_strip_plot(id, counts, factor_interest, title, gg.plot = T,
 
 \item{factor_interest}{A vector based on which you want to stratify your plot}
 
-\item{gg.plot}{Do you want to plot using ggplot2 (TRUE) or base R plotting (FALSE). Defaults to TRUE.}
+\item{title}{A title for the plot}
 
 \item{enlarged}{Do you want an enlarged plot on the right side (TRUE or FALSE). Defaults to "auto" whereby the standard deviation will be calculated of the sample. If the sd is smaller than 0.015 the enlarged plot will be generated for visibility purposes.}
 
 \item{type}{Choose the type of plot you want: "boxplot", "SE", "CI" or simply "mean". Defaults to "boxplot".}
+
+\item{colors}{A vector containing the the colors to be utilized for the plot with the contrast of interest as names (default: uses ggplot's default coloring scheme).}
+
+\item{legend}{Boolean depicting whether a legend should be included (default: TRUE)}
+
+\item{y_lab}{A specific name for the y labels (default: "Counts")}
 }
 \value{
 A stripplot of a specific gene
@@ -26,16 +32,9 @@ A stripplot of a specific gene
 \description{
 Produces a a stripplot of a specific transcript given a count matrix. Ensure that the count matrix has the identifier as the row names
 }
-\examples{
-Beta <- matrix(c(0.15,0.2,0.17,0.76,0.8,0.65,0.22,0.23,0.24,0.5,0.51,0.52), nrow = 2,ncol = 6, byrow = T)
-rownames(Beta) <- c("cg123456", "cg789010")
-Pheno <- c(rep("pheno1", 3), rep("pheno2", 3))
-cpg_strip_plot("cg123456", Beta, Pheno, type = "SE")
-}
 \author{
 Andrew Y.F. Li Yim
 }
 \keyword{boxplot,}
 \keyword{expression}
 \keyword{stripplot,}
-
