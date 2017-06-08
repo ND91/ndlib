@@ -6,9 +6,12 @@
 #' @param significance A boolean vector indicating the significant hits (T = significant, F = non-significant).
 #' @param identifiers A character vector of identifiers.
 #' @param int_effect_threshold A vertical dashed line to indicate results above an effect size. Defaults to NULL.
-#' @param effect_limit Upper limit of the plot. Defaults to finding the limits automatically.
+#' @param effect_limit Upper limit of the effect sizes of the plot. Defaults to finding the limits automatically.
+#' @param p_limit Upper limit of the p-values of the plot. Defaults to finding the limits automatically.
 #' @param top_names An integer representing the names of the top (based on significance) X hits. Defaults to NULL.
 #' @param title Title of the plot.
+#' @param x_lab X-axis label.
+#' @param y_lab Y-axis label.
 #' 
 #' @author Andrew Y.F. Li Yim
 #' 
@@ -38,9 +41,9 @@
 #' top_genes <- toptable(fit = lfit, coef = 2, number = Inf)
 #' 
 #' #Plot the volcano_plot
-#' 
+#' volcano_plot(top_genes$logFC, top_genes$pval, top_genes$padj < 0.05)
 
-volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_effect_threshold = NULL, effect_limit = NULL, top_names = NULL, title = NULL, x_lab = NULL, y_lab = NULL){
+volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_effect_threshold = NULL, effect_limit = NULL, p_limit = NULL, top_names = NULL, title = NULL, x_lab = NULL, y_lab = NULL, legend = T){
 
   #Sanitize the data
   if(is.null(effect_sizes)) stop("No vector of effect sizes defined")
@@ -75,8 +78,17 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   volplot$threshold <- factor(volplot$threshold, levels = c("sig. interesting", "significant", "non significant"))  
   
   #Plotting range thresholds
-  x_lim <- max(abs(effect_sizes))
-  y_lim <- c(0, range(-log10(volplot$pvals))[2]+1)
+  if(is.null(effect_limit)){
+    x_lim <- max(abs(effect_sizes))
+  } else{
+    x_lim <- effect_limit
+  }
+  if(is.null(p_limit)){
+    y_lim <- c(0, range(-log10(volplot$pvals))[2]+1)
+  } else{
+    y_lim <- p_limit
+  }
+  
 
   #Colors
   cbColors <- c("#009E73", "#0072B2", "#D55E00")
@@ -91,7 +103,7 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
     drawplot <- drawplot + geom_label_repel(data=head(volplot[order(volplot$pvals, decreasing= F),], n=top_names), show.legend = F)
   }
   drawplot <- drawplot + theme_bw()
-  drawplot <- drawplot + xlim(c(-x_lim, x_lim))
+  drawplot <- drawplot + xlim(c(-x_lim, x_lim)) + ylim(c(0, y_lim))
   if(!is.null(y_lab)){
     drawplot <- drawplot + ylab(y_lab)
   } else{
@@ -111,9 +123,14 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   drawplot <- drawplot + guides(colour = guide_legend(override.aes = list(size = 10)))
   drawplot <- drawplot + theme(axis.text = element_text(size = 17), 
                                axis.title = element_text(size = 17, face = "bold"),
-                               plot.title = element_text(size = 17, face = "bold"),
-                               legend.title = element_blank(),
-                               legend.text = element_text(size = 17),
-                               legend.position = "bottom")
+                               plot.title = element_text(size = 17, face = "bold"))
+  if(legend == T){
+    drawplot <- drawplot + theme(legend.title = element_blank(),
+                                 legend.text = element_text(size = 17),
+                                 legend.position = "bottom")
+  } else{
+    drawplot <- drawplot + theme(legend.position = "none")
+  }
+  
   drawplot
 }
