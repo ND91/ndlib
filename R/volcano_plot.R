@@ -84,7 +84,7 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
     x_lim <- effect_limit
   }
   if(is.null(p_limit)){
-    y_lim <- c(0, range(-log10(volplot$pvals))[2]+1)
+    y_lim <- max(-log10(volplot$pvals))+1
   } else{
     y_lim <- p_limit
   }
