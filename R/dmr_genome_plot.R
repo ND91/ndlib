@@ -123,8 +123,9 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
   } else{
     grtrack <- BiomartGeneRegionTrack(biomart = biomart, 
                                       genome = genome_version, 
-                                      chromosome = chr, 
-                                      start = start_dmr_flanks, end = end_dmr_flanks, 
+                                      chromosome = as.numeric(gsub("chr([0-9]+)", "\\1", chr)), 
+                                      start = start_dmr_flanks, 
+                                      end = end_dmr_flanks, 
                                       name = "ENS", 
                                       collapseTranscripts = "meta", 
                                       transcriptAnnotation = "symbol")

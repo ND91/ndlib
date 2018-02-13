@@ -5,9 +5,9 @@
 \title{dmr_genome_plot}
 \usage{
 dmr_genome_plot(name, chr, betas, annotation.gr, factor_interest, start_dmr,
-  end_dmr, flanks, SNP = F, Reg = F, dmps = F, genome_version = "hg19",
-  diff_symbol = T, dotsize = 0.7, plotgrid = T, confint = T,
-  highlight = T, col_DMR = NULL)
+  end_dmr, flanks, SNP = F, dmps = F, genome_version = "hg19",
+  biomart = NULL, diff_symbol = T, dotsize = 0.7, plotgrid = T,
+  confint = T, highlight = T, col_DMR = NULL)
 }
 \arguments{
 \item{name}{Name of the DMR/DMP}
@@ -28,11 +28,11 @@ dmr_genome_plot(name, chr, betas, annotation.gr, factor_interest, start_dmr,
 
 \item{SNP}{Do you want SNP information sourced from UCSC? Defaults to FALSE, because calling UCSC is slow.}
 
-\item{Reg}{Do you want Regulatory information sourced from UCSC? Defaults to FALSE, because calling UCSC is slow.}
-
 \item{dmps}{Do you want to indicate them individually? Defaults to FALSE}
 
 \item{genome_version}{Which genome build to use? Defaults to "hg19"}
+
+\item{biomart}{A biomart object. If NULL (default), the gene coordinates will be obtained from RefSeq.}
 
 \item{diff_symbol}{Do you want the different groups to be represented by different symbols (TRUE)? Defaults to FALSE}
 
