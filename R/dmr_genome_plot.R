@@ -151,7 +151,7 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
   #Change size symbols
   cexp <- dotsize
   
-  if(!is.null(col_DMR){
+  if(!is.null(col_DMR)){
     dtrack.meth <- DataTrack(range = dmr.meth.gr, 
                              name = "Methylation", 
                              ylim = c(0,1), 
