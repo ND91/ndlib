@@ -151,7 +151,7 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
   #Change size symbols
   cexp <- dotsize
   
-  ifelse(!is.null(col_DMR),
+  if(!is.null(col_DMR){
     dtrack.meth <- DataTrack(range = dmr.meth.gr, 
                              name = "Methylation", 
                              ylim = c(0,1), 
@@ -162,7 +162,8 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
                              type = type_plot, 
                              legend = TRUE,
                              fontsize = 10,
-                             col = col_DMR), 
+                             col = col_DMR)
+  } else{
     dtrack.meth <- DataTrack(range = dmr.meth.gr, 
                              name = "Methylation", 
                              ylim = c(0,1), 
@@ -172,7 +173,8 @@ dmr_genome_plot <- function(name, chr, betas, annotation.gr, factor_interest, st
                              cex = cexp,
                              type = type_plot, 
                              legend = TRUE,
-                             fontsize = 10))
+                             fontsize = 10)
+  }
   
   ###################
   # Base track list #
