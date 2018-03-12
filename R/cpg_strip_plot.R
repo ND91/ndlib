@@ -47,10 +47,10 @@ cpg_strip_plot <- function(cpg_num, betas, factor_interest, title, gg.plot = T, 
       xlab("") + 
       scale_shape_manual(values=(1:nlevels(beta.df$Cohort))%%10) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            axis.text = element_text(size = 17), 
-            axis.title = element_text(size = 17, face = "bold"),
-            legend.title = element_text(size = 17, face = "bold"),
-            legend.text = element_text(size = 17),
+            axis.text = element_text(size = 12), 
+            axis.title = element_text(size = 14, face = "bold"),
+            legend.title = element_text(size = 14, face = "bold"),
+            legend.text = element_text(size = 12),
             plot.title = element_text(face = "bold"))
     
     if(type == "boxplot"){
