@@ -4,8 +4,9 @@
 \alias{cpg_strip_plot}
 \title{cpg_strip_plot}
 \usage{
-cpg_strip_plot(cpg_num, betas, factor_interest, title, gg.plot = T,
-  enlarged = "auto", type = "boxplot")
+cpg_strip_plot(cpg_num, betas, factor_interest, title, enlarged = "auto",
+  type = c("boxplot", "CI", "SE", "mean"), colors = NULL,
+  legend = TRUE, y_lab = NULL)
 }
 \arguments{
 \item{cpg_num}{CpG number (ID)}
@@ -14,11 +15,15 @@ cpg_strip_plot(cpg_num, betas, factor_interest, title, gg.plot = T,
 
 \item{factor_interest}{A vector based on which you want to stratify your plot}
 
-\item{gg.plot}{Do you want to plot using ggplot2 (TRUE) or base R plotting (FALSE). Defaults to TRUE.}
-
 \item{enlarged}{Do you want an enlarged plot on the right side (TRUE or FALSE). Defaults to "auto" whereby the standard deviation will be calculated of the sample. If the sd is smaller than 0.015 the enlarged plot will be generated for visibility purposes.}
 
 \item{type}{Choose the type of plot you want: "boxplot", "SE", "CI" or simply "mean". Defaults to "boxplot".}
+
+\item{colors}{A vector containing the the colors to be utilized for the plot with the contrast of interest as names (default: uses ggplot's default coloring scheme).}
+
+\item{legend}{Boolean depicting whether a legend should be included (default: TRUE)}
+
+\item{y_lab}{A specific name for the y labels (default: "Beta")}
 }
 \value{
 A boxplot overlayed by a stripplot of a specific CpG

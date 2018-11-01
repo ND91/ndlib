@@ -4,10 +4,11 @@
 \alias{dmr_genome_plot}
 \title{dmr_genome_plot}
 \usage{
-dmr_genome_plot(name, chr, betas, annotation.gr, factor_interest, start_dmr,
-  end_dmr, flanks, SNP = F, dmps = F, genome_version = "hg19",
-  biomart = NULL, diff_symbol = T, dotsize = 0.7, plotgrid = T,
-  confint = T, highlight = T, col_DMR = NULL)
+dmr_genome_plot(name, chr, betas, annotation.gr, factor_interest,
+  start_dmr, end_dmr, flanks, SNP = F, dmps = F,
+  genome_version = "hg19", biomart = NULL, diff_symbol = T,
+  dotsize = 0.7, plotgrid = T, confint = T, highlight = T,
+  col_DMR = NULL)
 }
 \arguments{
 \item{name}{Name of the DMR/DMP}
