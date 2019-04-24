@@ -17,8 +17,8 @@
 #' @import ggplot2
 
 multenrich_plot <- function(enrich_list, title, pathway_col, es_col, pval_col){
-  plot_groups <- unlist(lapply(gsea_list, nrow))
-  plot_df <- data.frame(do.call(rbind, gsea_list))
+  plot_groups <- unlist(lapply(enrich_list, nrow))
+  plot_df <- data.frame(do.call(rbind, enrich_list))
   plot_df <- data.frame(Pathway = plot_df[,which(colnames(plot_df) == pathway_col)],
                         Enrichment = plot_df[,which(colnames(plot_df) == es_col)],
                         pval = plot_df[,which(colnames(plot_df) == pval_col)],
@@ -27,7 +27,7 @@ multenrich_plot <- function(enrich_list, title, pathway_col, es_col, pval_col){
   plot_df$Comparison <- factor(plot_df$Comparison, levels = unique(plot_df$Comparison))
 
   plot_df$Status <- rep("Upregulated", nrow(plot_df))
-  plot_df$Status[plot_df[,which(colnames(plot_df) == es_col)] < 0] <- "Downregulated"
+  plot_df$Status[plot_df$Enrichment < 0] <- "Downregulated"
   plot_df$Status <- factor(plot_df$Status, levels = c("Upregulated", "Downregulated"))
 
   #Plotting
