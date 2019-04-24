@@ -121,12 +121,10 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   drawplot <- drawplot + scale_color_manual(values = c(cbColors),
                                             drop = F)
   drawplot <- drawplot + guides(colour = guide_legend(override.aes = list(size = 10)))
-  drawplot <- drawplot + theme(axis.text = element_text(size = 17), 
-                               axis.title = element_text(size = 17, face = "bold"),
-                               plot.title = element_text(size = 17, face = "bold"))
+  drawplot <- drawplot + theme(axis.title = element_text(face = "bold"),
+                               plot.title = element_text(face = "bold"))
   if(legend == T){
     drawplot <- drawplot + theme(legend.title = element_blank(),
-                                 legend.text = element_text(size = 17),
                                  legend.position = "bottom")
   } else{
     drawplot <- drawplot + theme(legend.position = "none")
