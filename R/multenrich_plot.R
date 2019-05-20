@@ -25,14 +25,14 @@ multenrich_plot <- function(enrich_list, title = NULL, pathway_col, es_col, pval
   if(is.null(pval_col)) stop("Please indicate which column represents the p-values")
 
   plot_groups <- unlist(lapply(enrich_list, nrow))
-  plot_df <- data.frame(do.call(rbind, enrich_list))
-  plot_df <- data.frame(Pathway = plot_df[,which(colnames(plot_df) == pathway_col)],
-                        Enrichment = plot_df[,which(colnames(plot_df) == es_col)],
-                        pval = plot_df[,which(colnames(plot_df) == pval_col)],
+  plot_df_raw <- data.frame(do.call(rbind, enrich_list))
+  plot_df <- data.frame(Pathway = plot_df_raw[,which(colnames(plot_df_raw) == pathway_col)],
+                        Enrichment = plot_df_raw[,which(colnames(plot_df_raw) == es_col)],
+                        pval = plot_df_raw[,which(colnames(plot_df_raw) == pval_col)],
                         Comparison = rep(names(plot_groups), plot_groups))
 
   if(!is.null(padj_col)){
-    plot_df$padj <- plot_df[,which(colnames(plot_df) == padj_col)]
+    plot_df$padj <- plot_df_raw[,which(colnames(plot_df_raw) == padj_col)]
     plot_df$Significant <- plot_df$padj <= alpha
   }
 
@@ -52,13 +52,13 @@ multenrich_plot <- function(enrich_list, title = NULL, pathway_col, es_col, pval
                      shape = Status,
                      fill = Enrichment,
                      size = -log10(pval),
-                     alpha = significant))
+                     alpha = Significant))
   } else{
     plotobj <- plotobj +
       geom_point(aes(colour = Status,
                      shape = Status,
                      fill = Enrichment,
-                     size = -log10(pval))
+                     size = -log10(pval)))
   }
 
   if(!is.null(title)) plotobj <- plotobj + ggtitle(title)

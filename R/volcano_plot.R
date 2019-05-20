@@ -1,6 +1,6 @@
 #' volcano_plot
 #'
-#' This function was written since the volcanoplot is an easy way to globally assess the distribution of the p values relative to the effect sizes. This specific function has been tailored to my need of working with methylation data. 
+#' This function was written since the volcanoplot is an easy way to globally assess the distribution of the p values relative to the effect sizes. This specific function has been tailored to my need of working with methylation data.
 #' @param effect_sizes A numeric vector of effect sizes.
 #' @param pvals A numeric vector of p values.
 #' @param significance A boolean vector indicating the significant hits (T = significant, F = non-significant).
@@ -12,17 +12,17 @@
 #' @param title Title of the plot.
 #' @param x_lab X-axis label.
 #' @param y_lab Y-axis label.
-#' 
+#'
 #' @author Andrew Y.F. Li Yim
-#' 
+#'
 #' @return A volcano plot with the effect size on the X axis and the -log10 p-value on the Y axis. Adjusted p-values are indicated with a different color.
 #' @keywords volcanoplot
 #' @export
-#' @import ggplot2 
+#' @import ggplot2
 #' @import ggrepel
 #' @seealso \pkg{\link{minfi}}
 #' @seealso \pkg{\link{minfiData}}
-#' @examples 
+#' @examples
 #' #Load data
 #' require(minfiData)
 #' baseDir <- system.file("extdata", package = "minfiData")
@@ -31,15 +31,15 @@
 #' Mset <- preprocessIllumina(rgSet = RGset, bg.correct = T, normalize = "controls", reference = 2)
 #' Rset <- ratioConvert(Mset)
 #' GMset <- mapToGenome(Rset)
-#' 
+#'
 #' Beta <- getBeta(GMset)
 #' design <- model.matrix(~targets$Sample_Group)
-#' 
+#'
 #' #Linear regression
 #' lfit <- lmFit(Beta, design)
 #' lfit <- eBayes(lfit)
 #' top_genes <- toptable(fit = lfit, coef = 2, number = Inf)
-#' 
+#'
 #' #Plot the volcano_plot
 #' volcano_plot(top_genes$logFC, top_genes$pval, top_genes$padj < 0.05)
 
@@ -54,29 +54,29 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   else{significance <- as.logical(significance)}
   if(is.null(identifiers)) stop("No vector of identifiers provided")
   else{identifiers <- as.character(identifiers)}
-  if(!is.null(top_names) & !is.numeric(top_names)) stop("The top_names must be a numeric value") 
-  
+  if(!is.null(top_names) & !is.numeric(top_names)) stop("The top_names must be a numeric value")
+
   if(length(effect_sizes) != length(pvals)) stop("Size of the effect size vector and the p-value vector do not correspond")
   if(length(effect_sizes) != length(identifiers)) stop("Size of the effect size vector and the identifier vector do not correspond")
   if(length(effect_sizes) != length(significance)) stop("Size of the effect size vector and the significance vector do not correspond")
-  
+
   #which(is.na(significance))
-  
+
   #Generate data frame for ggplot
   volplot <- data.frame(effect_sizes, pvals, significance, identifiers)
-  
+
   threshold <- c()
-  
+
   if(TRUE %in% (volplot$significance)) threshold[which(volplot$significance == T)] <- "significant"
   if(FALSE %in% (volplot$significance)) threshold[which(volplot$significance == F)] <- "non significant"
-  
+
   volplot$threshold <- threshold
-  
+
   if(!is.null(int_effect_threshold)){
     volplot$threshold[abs(volplot$effect_sizes) >= abs(int_effect_threshold) & volplot$threshold == "significant"] <- "sig. interesting"
   }
-  volplot$threshold <- factor(volplot$threshold, levels = c("sig. interesting", "significant", "non significant"))  
-  
+  volplot$threshold <- factor(volplot$threshold, levels = c("sig. interesting", "significant", "non significant"))
+
   #Plotting range thresholds
   if(is.null(effect_limit)){
     x_lim <- max(abs(effect_sizes))
@@ -88,17 +88,17 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   } else{
     y_lim <- p_limit
   }
-  
+
 
   #Colors
   cbColors <- c("#009E73", "#0072B2", "#D55E00")
-  
+
   #Plotting with ggplot2
   drawplot <- ggplot(volplot, aes(x = effect_sizes, y = -log10(pvals), label = identifiers, color = threshold))
   drawplot <- drawplot + geom_point(alpha = 0.4, size = 1)
   if(!is.null(int_effect_threshold)){
     drawplot <- drawplot + geom_vline(xintercept = c(-int_effect_threshold, int_effect_threshold), linetype = "longdash")
-  } 
+  }
   if(!is.null(top_names)){
     drawplot <- drawplot + geom_label_repel(data=head(volplot[order(volplot$pvals, decreasing= F),], n=top_names), show.legend = F)
   }
@@ -116,11 +116,11 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   }
   if(!is.null(title)){
     drawplot <- drawplot + ggtitle(title)
-  } 
-  
+  }
+
   drawplot <- drawplot + scale_color_manual(values = c(cbColors),
                                             drop = F)
-  drawplot <- drawplot + guides(colour = guide_legend(override.aes = list(size = 10)))
+  drawplot <- drawplot + guides(colour = guide_legend(override.aes = list(size = 5)))
   drawplot <- drawplot + theme(axis.title = element_text(face = "bold"),
                                plot.title = element_text(face = "bold"))
   if(legend == T){
@@ -129,6 +129,6 @@ volcano_plot <- function(effect_sizes, pvals, significance, identifiers, int_eff
   } else{
     drawplot <- drawplot + theme(legend.position = "none")
   }
-  
+
   drawplot
 }
