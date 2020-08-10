@@ -4,7 +4,15 @@
 \alias{multenrich_plot}
 \title{multenrich_plot}
 \usage{
-multenrich_plot(enrich_list, title, pathway_col, es_col, pval_col)
+multenrich_plot(
+  enrich_list,
+  title = NULL,
+  pathway_col,
+  es_col,
+  pval_col,
+  padj_col = NULL,
+  alpha = 0.05
+)
 }
 \arguments{
 \item{enrich_list}{List of enrichment analyses, wherein each enrichment analysis requires columns containing the pathway name, the enrichment scores (make this 1 or -1 if no particular enrichment score is provided), and a p-value.}
@@ -15,7 +23,11 @@ multenrich_plot(enrich_list, title, pathway_col, es_col, pval_col)
 
 \item{es_col}{The column name of the enrichment scores. Make this 1 or -1 if no particular enrichment score is provided.}
 
-\item{pval_col}{The column name of the p-values columns. I advise not to use the adjusted p-values as they tend to flatten out (especially Benjamini-Hochberg adjusted p-values).}
+\item{pval_col}{The column name of the p-values columns. One could enter the adjusted p-values here as well, yet I advise not to do so as they tend to flatten out (especially Benjamini-Hochberg adjusted p-values).}
+
+\item{padj_col}{(optional) The column name of the adjusted p-values. This will be used for identifying significant hits, with the non-significant hits being plotted as transparant.}
+
+\item{alpha}{(default: 0.05) The alpha at which you define something as significant.}
 }
 \value{
 A ggplot object containing of heatmap-like plot of the enriched pathways indicating direction, size of the enrichment and the p-value for all provided enrichment analyses.

@@ -4,8 +4,14 @@
 \alias{methdata_to_granges}
 \title{methdata_to_granges}
 \usage{
-methdata_to_granges(methdata, annotation.gr, chr, start_region, end_region,
-  flanks)
+methdata_to_granges(
+  methdata,
+  annotation.gr,
+  chr,
+  start_region,
+  end_region,
+  flanks
+)
 }
 \arguments{
 \item{methdata}{Methylation data (betas or M-values)}

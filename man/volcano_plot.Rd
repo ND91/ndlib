@@ -4,10 +4,20 @@
 \alias{volcano_plot}
 \title{volcano_plot}
 \usage{
-volcano_plot(effect_sizes, pvals, significance, identifiers,
-  int_effect_threshold = NULL, effect_limit = NULL, p_limit = NULL,
-  top_names = NULL, title = NULL, x_lab = NULL, y_lab = NULL,
-  legend = T)
+volcano_plot(
+  effect_sizes,
+  pvals,
+  significance,
+  identifiers,
+  int_effect_threshold = NULL,
+  effect_limit = NULL,
+  p_limit = NULL,
+  top_names = NULL,
+  title = NULL,
+  x_lab = NULL,
+  y_lab = NULL,
+  legend = T
+)
 }
 \arguments{
 \item{effect_sizes}{A numeric vector of effect sizes.}

@@ -4,9 +4,17 @@
 \alias{transcript_strip_plot}
 \title{transcript_strip_plot}
 \usage{
-transcript_strip_plot(id, counts, factor_interest, title,
-  enlarged = "auto", type = c("boxplot", "CI", "SE", "mean"),
-  colors = NULL, legend = TRUE, y_lab = NULL)
+transcript_strip_plot(
+  id,
+  counts,
+  factor_interest,
+  title,
+  enlarged = "auto",
+  type = c("boxplot", "CI", "SE", "mean"),
+  colors = NULL,
+  legend = TRUE,
+  y_lab = NULL
+)
 }
 \arguments{
 \item{id}{Identifier as provided in the count matrix}

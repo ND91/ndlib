@@ -4,9 +4,17 @@
 \alias{cpg_strip_plot}
 \title{cpg_strip_plot}
 \usage{
-cpg_strip_plot(cpg_num, betas, factor_interest, title, enlarged = "auto",
-  type = c("boxplot", "CI", "SE", "mean"), colors = NULL,
-  legend = TRUE, y_lab = NULL)
+cpg_strip_plot(
+  cpg_num,
+  betas,
+  factor_interest,
+  title,
+  enlarged = "auto",
+  type = c("boxplot", "CI", "SE", "mean"),
+  colors = NULL,
+  legend = TRUE,
+  y_lab = NULL
+)
 }
 \arguments{
 \item{cpg_num}{CpG number (ID)}

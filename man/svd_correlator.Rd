@@ -4,8 +4,13 @@
 \alias{svd_correlator}
 \title{svd_correlator}
 \usage{
-svd_correlator(evs, confounder, alpha_threshold = 0.05,
-  padj.method = "BH", title)
+svd_correlator(
+  evs,
+  confounder,
+  alpha_threshold = 0.05,
+  padj.method = "BH",
+  title
+)
 }
 \arguments{
 \item{evs}{Either the output of SVD: A list containing three outputs: left singular matrix u, vector d and right singular matrix v, or a vector containing an eigen vector matrix obtained from SVD.}
